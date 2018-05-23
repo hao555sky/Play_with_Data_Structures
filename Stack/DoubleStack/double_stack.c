@@ -1,20 +1,8 @@
-#include <stdio.h>
+//
+// Created by hao on 18-5-23.
+//
 
-#define MAXSIZE 20
-#define OK 1
-#define ERROR 0
-#define TRUE 1
-#define FALSE 0
-
-typedef int SElemType;
-typedef int Status;
-
-typedef struct
-{
-    SElemType data[MAXSIZE];
-    int top1;  // 栈1 栈顶指针  top1 == -1 时为空
-    int top2;  // 栈2 栈顶指针  top2 == MAXSIZE 时为空
-}SqDoubleStack;
+#include "double_stack.h"
 
 /*  构造一个空栈S */
 Status InitStack(SqDoubleStack *S)
@@ -92,38 +80,4 @@ Status StackTraverse(SqDoubleStack S)
         visit(S.data[i--]);
     printf("\n");
     return OK;
-}
-
-int main() {
-    SqDoubleStack s;
-    SElemType e;
-    if(InitStack(&s) == OK)
-    {
-        for(int j = 1; j <= 5; j++)
-            Push(&s, j, 1);
-        for(int j = MAXSIZE; j >= MAXSIZE - 2; j--)
-            Push(&s, j, 2);
-    }
-
-    printf("栈中元素依次为：");
-    StackTraverse(s);
-
-    printf("当前栈中元素有：%d \n",StackLength(s));
-
-    Pop(&s, &e, 2);
-    printf("弹出的栈顶元素 e=%d\n",e);
-    printf("栈空否：%d(1:空 0:否)\n",StackEmpty(s));
-
-    for(int j = 6; j <= MAXSIZE - 2; j++)
-        Push(&s, j, 1);
-
-    printf("栈中元素依次为：");
-    StackTraverse(s);
-
-    printf("栈满否：%d(1:否 0:满)\n",Push(&s,100,1));
-
-    ClearStack(&s);
-    printf("清空栈后，栈空否：%d(1:空 0:否)\n",StackEmpty(s));
-
-    return 0;
 }

@@ -1,21 +1,10 @@
-#include <stdio.h>
+//
+// Created by hao on 18-5-23.
+//
 
-#define MAXSIZE 1000
-#define OK 1
-#define ERROR 0
-#define TRUE 1
-#define FALSE 0
+#include "static_link_list.h"
 
-typedef int ElemType;
-typedef int Status;
-
-typedef struct
-{
-    ElemType data;
-    int cur;  // 游标， 为 0 时表示无指向
-} Component, StaticLinkList[MAXSIZE];
-
-// space[0].cur 为头指针, 0 表示空指针
+// 将一维数组space中各分量链成一个备用链表, space[0].cur 为头指针, 0 表示空指针
 Status InitList(StaticLinkList space)
 {
     for(int i = 0; i < MAXSIZE - 1; i++)
@@ -24,6 +13,7 @@ Status InitList(StaticLinkList space)
     return OK;
 }
 
+/* 初始条件：静态链表L已存在。操作结果：返回L中数据元素个数 */
 int ListLength(StaticLinkList L)
 {
     int j = 0;
@@ -36,6 +26,7 @@ int ListLength(StaticLinkList L)
     return j;
 }
 
+/* 若备用空间链表非空，则返回分配的结点下标，否则返回0 */
 int Malloc_SLL(StaticLinkList space)
 {
     int i = space[0].cur;
@@ -44,6 +35,7 @@ int Malloc_SLL(StaticLinkList space)
     return i;
 }
 
+/*  在L中第i个元素之前插入新的数据元素e   */
 Status ListInsert(StaticLinkList L, int i, ElemType e)
 {
     int j, k, l;
@@ -63,12 +55,14 @@ Status ListInsert(StaticLinkList L, int i, ElemType e)
     return ERROR;
 }
 
+/*  将下标为k的空闲结点回收到备用链表 */
 void Free_SSL(StaticLinkList space, int k)
 {
     space[k].cur = space[0].cur;
     space[0].cur = k;
 }
 
+/*  删除在L中第i个数据元素   */
 Status ListDelete(StaticLinkList L, int i)
 {
     int j, k;
@@ -83,12 +77,14 @@ Status ListDelete(StaticLinkList L, int i)
     return OK;
 }
 
+/* 输出静态链表元素 */
 Status visit(ElemType c)
 {
     printf("%c ", c);
     return OK;
 }
 
+/* 遍历静态链表 */
 Status ListTraverse(StaticLinkList L)
 {
     int j = 0;
@@ -100,31 +96,4 @@ Status ListTraverse(StaticLinkList L)
         j++;
     }
     return OK;
-}
-
-int main() {
-    StaticLinkList L;
-    Status i;
-    i = InitList(L);
-    printf("初始化L后：L.length=%d\n",ListLength(L));
-
-    i = ListInsert(L, 1, 'F');
-    i=ListInsert(L,1,'E');
-    i=ListInsert(L,1,'D');
-    i=ListInsert(L,1,'B');
-    i=ListInsert(L,1,'A');
-
-    printf("\n在L的表头依次插入FEDBA后：\nL.data=");
-    ListTraverse(L);
-
-    i=ListInsert(L,3,'C');
-    printf("\n在L的“B”与“D”之间插入“C”后：\nL.data=");
-    ListTraverse(L);
-
-    i=ListDelete(L,1);
-    printf("\n在L的删除“A”后：\nL.data=");
-    ListTraverse(L);
-
-    printf("\n");
-    return 0;
 }
